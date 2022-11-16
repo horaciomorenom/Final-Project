@@ -11,22 +11,24 @@ void elevator_tests();
 
 void file_check();
 
-void start_tests() {
+void start_tests()
+{
     person_tests();
-    //elevator_tests();
-    //file_check();
+    // elevator_tests();
+    // file_check();
           
 }
     
-void person_tests() {
+void person_tests()
+{
 
-    //initialize a person with targetFloor 5, anger 5
+    // initialize a person with targetFloor 5, anger 5
 
     Person p("0f0t5a5");
     
     cout << p.getTargetFloor() << " " << p.getAngerLevel() << " Expected 5 5" << endl;
     
-    //simulate time being a multiple of TICKS_PER_ANGER_INCREASE
+    // simulate time being a multiple of TICKS_PER_ANGER_INCREASE
     
     bool exploded = p.tick(TICKS_PER_ANGER_INCREASE);
     
@@ -38,7 +40,7 @@ void person_tests() {
     
     p.tick(TICKS_PER_ANGER_INCREASE - 1);
     
-    //no change
+    // no change
     
     cout << p.getTargetFloor() << " " << p.getAngerLevel() << " Expected 5 6" << endl;
     
@@ -86,14 +88,12 @@ void person_tests() {
 
     bool exploded4 = p4.tick(TICKS_PER_ANGER_INCREASE);
 
-
-
     cout << exploded3 << " Expected 1" << endl;
-
 
 }
 
-void elevator_tests() {
+void elevator_tests()
+{
 
     Elevator e1;
 
@@ -143,19 +143,21 @@ void elevator_tests() {
     cout << e2.isServicing() << " Expected 0 " << endl;
 
 
-
     return; 
 }
 
-void file_check() {
+void file_check()
+{
     // open one of the text files that are part of the starter code
     ifstream ins;
     ins.open("new.in");
     // if the file was not in the correct directory, the stream state is fail
-    if (ins.fail()) {
+    if (ins.fail())
+    {
         cout << "Could not open new.in" << endl;
     }
-    else {
+    else
+    {
         cout << "Success! Text files are in the right directory." << endl;
     }
     return;
