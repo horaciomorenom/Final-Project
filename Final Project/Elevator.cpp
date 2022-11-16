@@ -17,7 +17,7 @@ using namespace std;
 
 void Elevator::tick(int currentTime)
 {
-    if (currentTime % TICKS_PER_ELEVATOR_MOVE == 0 && isServicing)
+    if (currentTime % TICKS_PER_ELEVATOR_MOVE == 0 && servicing)
     {
         if (currentFloor > targetFloor)
         {
@@ -33,7 +33,7 @@ void Elevator::tick(int currentTime)
 
     if (currentFloor == targetFloor)
     {
-        isServicing = false;
+        servicing = false;
     }
 
     return;
@@ -43,7 +43,7 @@ void Elevator::serviceRequest(int floorNum)
 {
     // set target and mark elevator as servicing
     targetFloor = floorNum;
-    isServicing = true;
+    servicing = true;
     return;
 }
 
