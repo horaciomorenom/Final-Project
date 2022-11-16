@@ -4,7 +4,7 @@
  * Elevator.cpp
  * Project UID 28eb18c2c1ce490aada441e65559efdd
  *
- * <#Names#>
+ * <#Name(s)#>
  * <#Uniqnames#>
  *
  * Final Project - Elevators
@@ -15,12 +15,36 @@
 
 using namespace std;
 
-void Elevator::tick(int currentTime) {
-    //TODO: Implement tick
+void Elevator::tick(int currentTime)
+{
+    if (currentTime % TICKS_PER_ELEVATOR_MOVE == 0 && isServicing)
+    {
+        if (currentFloor > targetFloor)
+        {
+            // go down a floor towards target
+            currentFloor -= 1;
+        }
+        else if (currentFloor < targetFloor)
+        {
+            // go up a floor towards target
+            currentFloor += 1;
+        }
+    }
+
+    if (currentFloor == targetFloor)
+    {
+        isServicing = false;
+    }
+
+    return;
 }
 
-void Elevator::serviceRequest(int floorNum) {
-    //TODO: Implement serviceRequest
+void Elevator::serviceRequest(int floorNum)
+{
+    // set target and mark elevator as servicing
+    targetFloor = floorNum;
+    isServicing = true;
+    return;
 }
 
 //////////////////////////////////////////////////////
