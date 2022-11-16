@@ -13,7 +13,7 @@ void file_check();
 
 void start_tests() {
     person_tests();
-    elevator_tests();
+    //elevator_tests();
     //file_check();
           
 }
@@ -82,7 +82,7 @@ void person_tests() {
 
     cout << p4.getTargetFloor() << " " << p4.getAngerLevel() << " Expected 2 11" << endl;
 
-    cout << p4.getCurrentFloor() << " Expected 11" << endl;
+    cout << p4.getCurrentFloor() << " Expected 6" << endl;
 
     bool exploded4 = p4.tick(TICKS_PER_ANGER_INCREASE);
 
