@@ -11,16 +11,14 @@ void elevator_tests();
 
 void file_check();
 
-void start_tests()
-{
+void start_tests() {
     person_tests();
     elevator_tests();
     //file_check();
           
 }
     
-void person_tests()
-{
+void person_tests() {
 
     //initialize a person with targetFloor 5, anger 5
 
@@ -95,8 +93,7 @@ void person_tests()
 
 }
 
-void elevator_tests()
-{
+void elevator_tests() {
 
     Elevator e1;
 
@@ -145,21 +142,20 @@ void elevator_tests()
 
     cout << e2.isServicing() << " Expected 0 " << endl;
 
+
+
     return; 
 }
 
-void file_check()
-{
+void file_check() {
     // open one of the text files that are part of the starter code
     ifstream ins;
     ins.open("new.in");
     // if the file was not in the correct directory, the stream state is fail
-    if (ins.fail())
-    {
+    if (ins.fail()) {
         cout << "Could not open new.in" << endl;
     }
-    else
-    {
+    else {
         cout << "Success! Text files are in the right directory." << endl;
     }
     return;
