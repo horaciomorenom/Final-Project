@@ -17,21 +17,57 @@ using namespace std;
 
 int Floor::tick(int currentTime) {
     //TODO: Implement tick
-
+	int explodedPeople = 0;
+	for (int i = 0; i < numPeople; i++) {
+		if (people[i].tick(currentTime)) {
+			explodedPeople++;
+		}
+	}
+	if (explodedPeople > 0) {
+		removePeople(people, explodedPeople, numPeople);
+	}
+	return explodedPeople;
     //returning 0 to prevent compilation error
     return 0;
 }
 
 void Floor::addPerson(Person newPerson, int request) {
     //TODO: Implement addPerson
+	people[numPeople] = newPerson;
+	numPeople++;
+	if (request > 0) {
+		hasUpRequest = true;
+	}
+	else {
+		hasDownRequest = true;
+	}
 }
 
 void Floor::removePeople(int indicesToRemove[MAX_PEOPLE_PER_FLOOR], int numPeopleToRemove) {
     //TODO: Implement removePeople
+	for (int i = 0; i < numPeople; i++) {
+		if (people[i].didExplode()) {
+			for (int j = i; j < numPeople - 1; j++) {
+				people[j] = people[j + 1];
+			}
+			numPeople--;
+		}
+	}
+	resetRequests();
 }
 
 void Floor::resetRequests() {
     //TODO: Implement resetRequests
+	hasUpRequest = false;
+	hasDownRequest = false;
+	for (int i = 0; i < numPeople; i++) {
+		if (people[i].getCurrentFloor() < people[i].getTargetFloor()) {
+			hasUpRequest = true;
+		}
+		else {
+			hasDownRequest = true;
+		}
+	}
 }
 
 //////////////////////////////////////////////////////
