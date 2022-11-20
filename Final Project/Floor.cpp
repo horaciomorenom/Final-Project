@@ -16,43 +16,70 @@
 using namespace std;
 
 int Floor::tick(int currentTime) {
-    //TODO: Implement tick
+    
 	int explodedPeople = 0;
+	int expIndices[MAX_PEOPLE_PER_FLOOR];
 	for (int i = 0; i < numPeople; i++) {
 		if (people[i].tick(currentTime)) {
-			explodedPeople++;
+			expIndices[explodedPeople] = i;
+			explodedPeople++;			
 		}
 	}
 	if (explodedPeople > 0) {
-		removePeople(people, explodedPeople, numPeople);
+		removePeople(expIndices, explodedPeople);
 	}
 	return explodedPeople;
-    //returning 0 to prevent compilation error
-    return 0;
 }
 
 void Floor::addPerson(Person newPerson, int request) {
-    //TODO: Implement addPerson
-	people[numPeople] = newPerson;
-	numPeople++;
-	if (request > 0) {
-		hasUpRequest = true;
+    
+	if (numPeople < MAX_PEOPLE_PER_FLOOR){
+		people[numPeople] = newPerson;
+		numPeople++;
+		if (request > 0) {
+			hasUpRequest = true;
+		}
+		else {
+			hasDownRequest = true;
+		}
 	}
-	else {
-		hasDownRequest = true;
-	}
+		
 }
 
 void Floor::removePeople(int indicesToRemove[MAX_PEOPLE_PER_FLOOR], int numPeopleToRemove) {
-    //TODO: Implement removePeople
-	for (int i = 0; i < numPeople; i++) {
-		if (people[i].didExplode()) {
-			for (int j = i; j < numPeople - 1; j++) {
-				people[j] = people[j + 1];
-			}
-			numPeople--;
+
+	Person newPeople[MAX_PEOPLE_PER_FLOOR];
+	int filledSpots = 0;
+	int indices[MAX_PEOPLE_PER_FLOOR];
+
+	for (int i = 0; i < MAX_PEOPLE_PER_FLOOR; i++) {
+		if (i < numPeople) {
+			indices[i] = i;
+		}
+		else {
+			indices[i] = -1;
+		}
+
+	}
+
+	for (int i = 0; i < numPeopleToRemove; i++) {
+		indices[indicesToRemove[i]] = -1;
+	}
+
+	for (int i = 0; i < MAX_PEOPLE_PER_FLOOR; i++) {
+		if (indices[i] != -1){
+			newPeople[filledSpots] = people[indices[i]];
+			filledSpots += 1;
 		}
 	}
+
+	numPeople = numPeople - numPeopleToRemove;
+
+	for (int i = 0; i < MAX_PEOPLE_PER_FLOOR; i++) {
+		people[i] = newPeople[i];
+	}
+	
+
 	resetRequests();
 }
 

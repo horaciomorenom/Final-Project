@@ -2,6 +2,7 @@
 #include <fstream>
 #include "Person.h"
 #include "Elevator.h"
+#include "Floor.h"
 #include "Utility.h"
 using namespace std;
 
@@ -161,4 +162,16 @@ void file_check()
         cout << "Success! Text files are in the right directory." << endl;
     }
     return;
+}
+
+void test_floor() {
+
+    cout << "Testing Floor class" << endl << endl;
+
+    Floor f1;
+
+    Person p1("1f2t5a0");
+
+    f1.addPerson(p1, p1.getTargetFloor() - p1.getCurrentFloor());
+
 }
