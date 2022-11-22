@@ -3,6 +3,7 @@
 #include "Person.h"
 #include "Elevator.h"
 #include "Floor.h"
+#include "Move.h"
 #include "Utility.h"
 using namespace std;
 
@@ -12,10 +13,13 @@ void elevator_tests();
 
 void file_check();
 
+void move_tests();
+
 void start_tests()
 {
     person_tests();
-    // elevator_tests();
+    elevator_tests();
+    move_tests();
     // file_check();
           
 }
@@ -145,6 +149,100 @@ void elevator_tests()
 
 
     return; 
+}
+
+void move_tests()
+{
+    cout << endl << "Testing Move:" << endl;
+
+    Elevator testElevator[NUM_ELEVATORS];
+    Elevator elevatorZero;
+    Elevator elevatorOne;
+    Elevator elevatorTwo;
+    
+    testElevator[0] = elevatorZero;
+    testElevator[1] = elevatorOne;
+    testElevator[2] = elevatorTwo;
+    
+
+    // Move(commandString)
+    cout << "Testing Move non-default constructor, Quit Move:" << endl;
+    Move quitMoveTest("Q");
+    cout << endl << "Expecting 1, actual: " << quitMoveTest.isQuitMove();
+    Move quitMoveTest2("q");
+    cout << endl << "Expecting 1, actual: " << quitMoveTest2.isQuitMove();
+
+    cout << endl << "Testing Move non-default constructor, Save Move:" << endl;
+    Move saveMoveTest("S");
+    cout << endl << "Expecting 1, actual: " << saveMoveTest.isSaveMove();
+    Move saveMoveTest2("s");
+    cout << endl << "Expecting 1, actual: " << saveMoveTest2.isSaveMove();
+
+    cout << endl << "Testing Move non-default constructor, Pass Move:" << endl;
+    Move passMoveTest("");
+    cout << endl << "Expecting 1, actual: " << passMoveTest.isPassMove();
+
+    cout << endl << "Testing Move non-default constructor, Pickup Move:" << endl;
+    Move pickupMoveTest("e1p");
+    cout << endl << "Expecting 1, actual: " << pickupMoveTest.isPickupMove();
+    Move pickupMoveTest2("e2p");
+    cout << endl << "Expecting 1, actual: " << pickupMoveTest2.isPickupMove();
+
+    cout << endl << "Testing Move non-default constructor, Service Move 10th floor:" << endl;
+    Move serviceMoveTest10("e1f10");
+    cout << endl << "Expecting 9, actual: " << serviceMoveTest10.getTargetFloor();
+
+    cout << endl << "Testing Move non-default constructor, Service Move 1 digit floors:" << endl;
+    Move serviceMoveTest("e1f2");
+    cout << endl << "Expecting 1, actual: " << serviceMoveTest.getTargetFloor();
+    Move serviceMoveTest5("e2f5");
+    cout << endl << "Expecting 4, actual: " << serviceMoveTest5.getTargetFloor();
+
+    cout << endl << "Testing Move non-default constructor, Service Move not other move types" << endl;
+    cout << endl << "Expecting 10000, actual: " << serviceMoveTest.getTargetFloor()
+         << serviceMoveTest.isPassMove() << serviceMoveTest.isQuitMove() << serviceMoveTest.isSaveMove()
+         << serviceMoveTest.isPickupMove();
+
+    // isValidMove
+    cout << endl << "Testing Move isValidMove(): " << endl;
+    // invalid cases
+    cout << "Invalid Moves:" << endl;
+    Move invalidElevator("r");
+    cout << endl << "Expecting 0, actual: " << invalidElevator.isValidMove(testElevator);
+    Move invalidElevator2("e5p");
+    cout << endl << "Expecting 0, actual: " << invalidElevator2.isValidMove(testElevator);
+    Move invalidServiceMove("e1d");
+    cout << endl << "Expecting 0, actual: " << invalidServiceMove.isValidMove(testElevator);
+    Move invalidTargetFloor("e1f11");
+    cout << endl << "Expecting 0, actual: " << invalidTargetFloor.isValidMove(testElevator);
+    Move invalidTargetFloor2("e2f-2");
+    cout << endl << "Expecting 0, actual: " << invalidTargetFloor2.isValidMove(testElevator);
+
+    // valid cases
+    cout << endl << "Valid Moves:" << endl;
+    cout << endl << "Expecting 1, actual: " << serviceMoveTest.isValidMove(testElevator);
+    cout << endl << "Expecting 1, actual: " << serviceMoveTest10.isValidMove(testElevator);
+    cout << endl << "Expecting 1, actual: " << pickupMoveTest.isValidMove(testElevator);
+    cout << endl << "Expecting 1, actual: " << passMoveTest.isValidMove(testElevator);
+    cout << endl << "Expecting 1, actual: " << saveMoveTest.isValidMove(testElevator);
+    cout << endl << "Expecting 1, actual: " << quitMoveTest2.isValidMove(testElevator);
+
+    // cout << endl << "Testing Move setPeopleToPickup: " << endl;
+    Floor floor1;
+    Person person1("7f5t9a3");
+    Person person2("2f5t7a1");
+    floor1.addPerson(person1,0);
+    floor1.addPerson(person2,0);
+    string pickList = "01";
+    Move defaultMove("e0f9");
+
+    defaultMove.setPeopleToPickup(pickList, 5, floor1);
+    cout << endl;
+    cout << defaultMove.getTotalSatisfaction() << endl;
+    cout << defaultMove.getTargetFloor() << endl;
+    cout << defaultMove.getNumPeopleToPickup() << endl;
+
+    return;
 }
 
 void file_check()
