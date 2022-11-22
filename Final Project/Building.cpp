@@ -17,7 +17,6 @@ using namespace std;
 void Building::spawnPerson(Person newPerson){
     floors[newPerson.getCurrentFloor()].addPerson(newPerson, 
         newPerson.getTargetFloor() - newPerson.getCurrentFloor());
-    //TODO: CHECK
 }
 
 void Building::update(Move move){
@@ -25,27 +24,43 @@ void Building::update(Move move){
     if (move.isPassMove()) {
         return;
     }
+   
+    int pickupList[MAX_PEOPLE_PER_FLOOR];
+    int elevator = move.getElevatorId();
+    int targetFloor = move.getTargetFloor();
+
+    elevators[elevator].serviceRequest(targetFloor);
+
     if (move.isPickupMove()) {
-        int pickupList[MAX_PEOPLE_PER_FLOOR];
+
         move.copyListOfPeopleToPickup(pickupList);
-        int targetFloor = move.getTargetFloor();
-        floors[targetFloor].removePeople(pickupList, move.getNumPeopleToPickup());
-        int elevator = move.getElevatorId();
+        floors[targetFloor].removePeople(pickupList,
+            move.getNumPeopleToPickup());
+
     }
 
-    // TODO: FINISH
+    return;
     
 }
 
 int Building::tick(Move move){
     
+    int expPeople = 0;
+
     time += 1;
 
     update(move);
 
-    //TODO: FINISH
+    for (int i = 0; i < NUM_ELEVATORS; i++) {
+        elevators[i].tick(time);
+    }
 
-    return 0;
+    for (int i = 0; i < NUM_FLOORS; i++) {
+        expPeople += floors[i].tick(time);
+    }
+
+
+    return expPeople;
 }
 
 //////////////////////////////////////////////////////
