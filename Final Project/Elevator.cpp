@@ -4,8 +4,8 @@
  * Elevator.cpp
  * Project UID 28eb18c2c1ce490aada441e65559efdd
  *
- * <#Name(s)#>
- * <#Uniqnames#>
+ * <Annabelle Thelen, Horacio Moreno Montanes, Samantha Deleon-Castillo, Aditya Sinha>
+ * <annathel, hmorenom, sdeleonc, adisinha>
  *
  * Final Project - Elevators
  */
