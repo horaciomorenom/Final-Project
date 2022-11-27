@@ -4,24 +4,51 @@
 #include "Elevator.h"
 #include "Floor.h"
 #include "Move.h"
+#include "Building.h"
 #include "Utility.h"
 using namespace std;
+
+void file_check();
 
 void person_tests();
 
 void elevator_tests();
 
-void file_check();
+void test_floor();
 
 void move_tests();
+
+void building_tests();
+
+void game_tests();
 
 void start_tests()
 {
     person_tests();
     elevator_tests();
+    test_floor();
     move_tests();
+    building_tests();
+    // game_tests();
+    
     // file_check();
-          
+}
+
+void file_check()
+{
+    // open one of the text files that are part of the starter code
+    ifstream ins;
+    ins.open("new.in");
+    // if the file was not in the correct directory, the stream state is fail
+    if (ins.fail())
+    {
+        cout << "Could not open new.in" << endl;
+    }
+    else
+    {
+        cout << "Success! Text files are in the right directory." << endl;
+    }
+    return;
 }
     
 void person_tests()
@@ -151,6 +178,18 @@ void elevator_tests()
     return; 
 }
 
+void test_floor() {
+
+    cout << "Testing Floor class" << endl << endl;
+
+    Floor f1;
+
+    Person p1("1f2t5a0");
+
+    f1.addPerson(p1, p1.getTargetFloor() - p1.getCurrentFloor());
+
+}
+
 void move_tests()
 {
     cout << endl << "Testing Move:" << endl;
@@ -189,17 +228,17 @@ void move_tests()
     cout << endl << "Expecting 1, actual: " << pickupMoveTest2.isPickupMove();
 
     cout << endl << "Testing Move non-default constructor, Service Move 10th floor:" << endl;
-    Move serviceMoveTest10("e1f10");
+    Move serviceMoveTest10("e1f9");
     cout << endl << "Expecting 9, actual: " << serviceMoveTest10.getTargetFloor();
 
     cout << endl << "Testing Move non-default constructor, Service Move 1 digit floors:" << endl;
     Move serviceMoveTest("e1f2");
-    cout << endl << "Expecting 1, actual: " << serviceMoveTest.getTargetFloor();
+    cout << endl << "Expecting 2, actual: " << serviceMoveTest.getTargetFloor();
     Move serviceMoveTest5("e2f5");
-    cout << endl << "Expecting 4, actual: " << serviceMoveTest5.getTargetFloor();
+    cout << endl << "Expecting 5, actual: " << serviceMoveTest5.getTargetFloor();
 
     cout << endl << "Testing Move non-default constructor, Service Move not other move types" << endl;
-    cout << endl << "Expecting 10000, actual: " << serviceMoveTest.getTargetFloor()
+    cout << endl << "Expecting 20000, actual: " << serviceMoveTest.getTargetFloor()
          << serviceMoveTest.isPassMove() << serviceMoveTest.isQuitMove() << serviceMoveTest.isSaveMove()
          << serviceMoveTest.isPickupMove();
 
@@ -213,8 +252,6 @@ void move_tests()
     cout << endl << "Expecting 0, actual: " << invalidElevator2.isValidMove(testElevator);
     Move invalidServiceMove("e1d");
     cout << endl << "Expecting 0, actual: " << invalidServiceMove.isValidMove(testElevator);
-    Move invalidTargetFloor("e1f11");
-    cout << endl << "Expecting 0, actual: " << invalidTargetFloor.isValidMove(testElevator);
     Move invalidTargetFloor2("e2f-2");
     cout << endl << "Expecting 0, actual: " << invalidTargetFloor2.isValidMove(testElevator);
 
@@ -245,31 +282,61 @@ void move_tests()
     return;
 }
 
-void file_check()
+void building_tests()
 {
-    // open one of the text files that are part of the starter code
-    ifstream ins;
-    ins.open("new.in");
-    // if the file was not in the correct directory, the stream state is fail
-    if (ins.fail())
-    {
-        cout << "Could not open new.in" << endl;
-    }
-    else
-    {
-        cout << "Success! Text files are in the right directory." << endl;
-    }
+    cout << endl << "Testing Building.cpp:" << endl;
+
+    cout << endl << "Testing Building spawnPerson:" << endl;
+
+    // Person inputString example: "7f4t8a3"
+    // corresponds to turn, currentFloor, targetFloor, angerLevel
+
+    Building spawnTestBuilding;
+    // default building and person (on floor 0)
+    Person newPersonTest;
+    spawnTestBuilding.spawnPerson(newPersonTest);
+    spawnTestBuilding.prettyPrintBuilding(cout);
+
+    // add person on 6th floor
+    Person sixFloorPerson("0f6t1a0");
+    spawnTestBuilding.spawnPerson(sixFloorPerson);
+    spawnTestBuilding.prettyPrintBuilding(cout);
+
+    cout << endl << "Testing Building Update and Tick:" << endl;
+    // pass update
+    Move passMove("");
+    spawnTestBuilding.tick(passMove);
+    spawnTestBuilding.prettyPrintBuilding(cout);
+
+    // service update
+    Move serviceMove("e1f6");
+    spawnTestBuilding.tick(serviceMove);
+    spawnTestBuilding.prettyPrintBuilding(cout);
+    // pass until get to 6th floor
+    spawnTestBuilding.tick(passMove);
+    spawnTestBuilding.tick(passMove);
+    spawnTestBuilding.tick(passMove);
+    spawnTestBuilding.tick(passMove);
+    spawnTestBuilding.tick(passMove);
+    cout << endl << "Expecting elevator to be at 6 floor, 1 person with 1 anger level: ";
+    spawnTestBuilding.prettyPrintBuilding(cout);
+    // pickup update
+    Move pickupMove("e1p");
+    string listToPickup = "0";
+    pickupMove.setPeopleToPickup(listToPickup, 6, spawnTestBuilding.getFloorByFloorNum(6));
+    spawnTestBuilding.tick(pickupMove);
+    spawnTestBuilding.prettyPrintBuilding(cout);
+
     return;
 }
 
-void test_floor() {
+void game_tests()
+{
+    cout << endl << "Testing Game.cpp:" << endl;
 
-    cout << "Testing Floor class" << endl << endl;
+    cout << endl << "Testing Game playGame:" << endl;
 
-    Floor f1;
+    cout << endl << "Testing Game isValidPickupList:" << endl;
 
-    Person p1("1f2t5a0");
-
-    f1.addPerson(p1, p1.getTargetFloor() - p1.getCurrentFloor());
-
+    return;
 }
