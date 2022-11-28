@@ -19,33 +19,75 @@
 using namespace std;
 
 // Stub for playGame for Core, which plays random games
+
 // You *must* revise this function according to the RME and spec
+
 void Game::playGame(bool isAIModeIn, ifstream& gameFile) {
-    std::mt19937 gen(1);
-    std::uniform_int_distribution<> floorDist(0, 9);
-    std::uniform_int_distribution<> angerDist(0, 3);
+
+    if (gameFile.is_open() == false) {
+
+        exit(1);
+
+    }
+
+
 
     isAIMode = isAIModeIn;
+
     printGameStartPrompt();
+
     initGame(gameFile);
 
+
+
+    string guest_floor;
+
+
+
     while (true) {
-        int src = floorDist(gen);
-        int dst = floorDist(gen);
-        if (src != dst) {
-            std::stringstream ss;
-            ss << "0f" << src << "t" << dst << "a" << angerDist(gen);
-            Person p(ss.str());
-            building.spawnPerson(p);
+
+        while (gameFile >> guest_floor) {
+
+            Person person(guest_floor);
+
+            while (building.getTime() < person.getTurn()) {
+
+
+
+                building.prettyPrintBuilding(cout);
+
+                satisfactionIndex.printSatisfaction(cout, false);
+
+                checkForGameEnd();
+
+
+
+                Move nextMove = getMove();
+
+                update(nextMove);
+
+            }
+
+            building.spawnPerson(person);
+
         }
 
+
+
         building.prettyPrintBuilding(cout);
+
         satisfactionIndex.printSatisfaction(cout, false);
+
         checkForGameEnd();
 
+
+
         Move nextMove = getMove();
+
         update(nextMove);
+
     }
+
 }
 
 // Stub for isValidPickupList for Core
