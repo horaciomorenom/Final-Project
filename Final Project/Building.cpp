@@ -34,7 +34,7 @@ void Building::update(Move move){
     if (move.isPickupMove()) {
 
         move.copyListOfPeopleToPickup(pickupList);
-        floors[targetFloor].removePeople(pickupList,
+        floors[elevators[elevator].getCurrentFloor()].removePeople(pickupList,
             move.getNumPeopleToPickup());
 
     }

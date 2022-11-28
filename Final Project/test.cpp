@@ -24,10 +24,10 @@ void game_tests();
 
 void start_tests()
 {
-    person_tests();
-    elevator_tests();
-    test_floor();
-    move_tests();
+    //person_tests();
+    //elevator_tests();
+    //test_floor();
+    //move_tests();
     building_tests();
     // game_tests();
     

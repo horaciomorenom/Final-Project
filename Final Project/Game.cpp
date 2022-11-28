@@ -12,6 +12,7 @@
  
 #include <random>
 #include <sstream>
+#include <string>
 #include "Game.h"
 #include "AI.h"
 #include "Utility.h"
@@ -50,6 +51,83 @@ void Game::playGame(bool isAIModeIn, ifstream& gameFile) {
 // Stub for isValidPickupList for Core
 // You *must* revise this function according to the RME and spec
 bool Game::isValidPickupList(const string& pickupList, const int pickupFloorNum) const {
+    
+    int const pickupSize = pickupList.length();
+
+    stringstream ss(pickupList);
+
+    int pickupArray[ELEVATOR_CAPACITY];
+
+    int maxIndex = 0;
+
+    char charBox;
+    int numBox;
+
+    bool goingUp = false;
+    bool goingDown = false;
+
+    if (building.getFloorByFloorNum(pickupFloorNum).getNumPeople() == 0) { // No one to pick up!
+        return false;
+    }
+
+    if (pickupSize > ELEVATOR_CAPACITY) { //Make sure length is below capacity
+        return false;
+    }
+
+    for (int i = 0; i < pickupSize; i++) {
+
+        ss >> charBox;
+
+        if (isdigit(charBox)){// Check all numbers are nonnegative integers and add to array
+            numBox = charBox - '0';
+            pickupArray[i] = numBox;
+        }
+        else {
+            return false;
+        }
+
+        for (int j = 0; j < i; j++) { // Make sure  there are no repeated indices
+
+            if (pickupArray[i] == pickupArray[j]) {
+                return false;
+            }   
+        }
+
+        if (pickupArray[i] > maxIndex) { // Update max index
+            maxIndex = pickupArray[i];
+        }
+
+        if (building.getFloorByFloorNum(pickupFloorNum).getPersonByIndex(pickupArray[i]).getTargetFloor() - pickupFloorNum < 0) {
+            goingDown = true;
+        }
+        else {
+            goingUp = true;
+        }
+
+    }
+
+    if (maxIndex > building.getFloorByFloorNum(pickupFloorNum).getNumPeople() - 1)  {
+        return false;
+    }
+
+    if (goingDown && goingUp) { //Returns true if there are people going up and down
+        return false;
+    }
+
+    return true;
+
+    
+
+   
+
+
+
+
+
+
+
+    
+    
     return true;
 }
 
