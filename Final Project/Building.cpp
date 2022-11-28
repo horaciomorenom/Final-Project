@@ -4,8 +4,8 @@
  * Building.cpp
  * Project UID 28eb18c2c1ce490aada441e65559efdd
  *
- * <#Names#>
- * <#Uniqnames#>
+ * <Annabelle Thelen, Horacio Moreno Montanes, Samantha Deleon-Castillo, Aditya Sinha>
+ * <annathel, hmorenom, sdeleonc, adisinha>
  *
  * Final Project - Elevators
  */
@@ -62,6 +62,7 @@ int Building::tick(Move move){
 
     return expPeople;
 }
+
 
 //////////////////////////////////////////////////////
 ////// DO NOT MODIFY ANY CODE BENEATH THIS LINE //////
